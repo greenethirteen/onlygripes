@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Balance Counseling</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
-  <link rel="preload" as="image" href="bh.gif" />
+  <link rel="preload" as="image" href="bg.jpg" />
   <style>
     * {
       box-sizing: border-box;
@@ -62,7 +62,7 @@
       align-items: center;
       justify-content: flex-start;
       min-height: 100vh;
-      background: #111 url('bh1.gif') no-repeat center center fixed;
+      background: #111 url('bg.jpg') no-repeat center center fixed;
       background-size: cover;
       padding: 2rem 1rem;
       backdrop-filter: brightness(0.5);
@@ -72,9 +72,7 @@
       margin-top: 1rem;
       margin-bottom: 0.3rem;
     }
-    h1::first-letter {
-      color: white;
-    }
+
     h1 span {
       color: #66d9ef;
     }
@@ -183,7 +181,7 @@
   <script>
     // Preload background image
     const preloadImg = new Image();
-    preloadImg.src = "bh.gif";
+    preloadImg.src = "bg.jpg";
 
     window.onload = function () {
       setTimeout(() => {

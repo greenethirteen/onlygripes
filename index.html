@@ -17,7 +17,7 @@
       text-align: center;
       padding: 0;
     }
-    h1, .intro, textarea, #response, footer, button, a {
+    h1, .intro, textarea, #response, button, a {
       text-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
     }
     #splash {
@@ -72,7 +72,6 @@
       margin-top: 1rem;
       margin-bottom: 0.3rem;
     }
-
     h1 span {
       color: #66d9ef;
     }
@@ -84,15 +83,14 @@
       max-width: 80%;
       height: auto;
     }
-.intro {
-  font-size: clamp(1.5rem, 4vw, 2rem);
-  max-width: 90%;
-  margin-bottom: 2rem;
-  line-height: 1.5;
-  color: #f8f8f8;
-  font-weight: bold;
-}
-
+    .intro {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      max-width: 90%;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+      color: #f8f8f8;
+      font-weight: bold;
+    }
     textarea {
       width: 100%;
       max-width: 500px;
@@ -105,6 +103,11 @@
       background: #222;
       color: #fff;
       margin-bottom: 1rem;
+      font-family: Helvetica, sans-serif;
+    }
+    /* ensure placeholder text also uses Helvetica */
+    textarea::placeholder {
+      font-family: Helvetica, sans-serif;
     }
     button {
       background: #ff4444;
@@ -130,19 +133,6 @@
       color: #aaffaa;
       line-height: 1.6;
       min-height: 100px;
-    }
-    #daily {
-      margin-top: 0.5rem;
-      font-size: 1rem;
-      color: #ccc;
-      max-width: 500px;
-      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-    }
-    footer {
-      margin-top: 3rem;
-      font-size: 0.9rem;
-      color: #aaa;
-      padding: 0 1rem;
     }
     a {
       color: #ff8888;
@@ -170,12 +160,10 @@
     <textarea id="userGripe" placeholder="Type your gripe, sadness, or existential dread here..."></textarea>
     <br />
     <button onclick="respondToGripe()">Send it into the void</button>
+      <br><br>  <br><br>
+<p>Feeling overwhelmed? <a href="https://www.balancecounseling.info" target="_blank">Reach out to a friendly ear</a>.</p>
     <br><br>
     <div id="response"></div>
-    <div id="daily"></div>
-    <footer>
-      <p>You’re not alone. <a href="https://www.balancecounseling.info" target="_blank">Talk to someone who listens</a>.</p>
-    </footer>
   </div>
 
   <script>
@@ -187,127 +175,110 @@
       setTimeout(() => {
         document.getElementById('splash').style.display = 'none';
         document.getElementById('mainContent').style.display = 'flex';
-        showDailyMessage();
       }, 3000);
     };
 
-const positiveResponses = [
-  "You’re not broken. You’re buffering through life’s terrible WiFi. It’ll reconnect.",
-  "Your brain is being loud again. Doesn’t mean it’s right — just persistent.",
-  "Even WiFi drops. So can you — the weight, the pressure, the guilt. Just for a bit.",
-  "You're not behind. You’re on your own weird, wonderful schedule. Time is fake anyway.",
-  "Feelings are just emotional farts. Awkward, surprising, but very human. Let them out.",
-  "You're not a mess. You’re a Picasso. Some people just don’t get modern art.",
-  "Rest isn’t laziness. It’s maintenance. Even superheroes nap sometimes.",
-  "Not every thought deserves a TED Talk. Especially the anxious ones.",
-  "Crying counts as cardio. Bonus points if it’s in the shower with dramatic music.",
-  "You're basically emotional Teflon. The bad stuff slides off eventually — with a few dramatic pauses.",
-  "Some days you're the pigeon. Other days you're the statue. Either way, you're part of the story.",
-  "If life’s a circus, you’re the fire-eater. Bold, chaotic, and kind of mesmerizing.",
-  "You're more stable than your phone battery after 2 years. That’s saying something.",
-  "Your chaos has a rhythm. It’s not off-beat, it’s jazz.",
-  "Breathe. Even fish do it. And they don’t pay taxes.",
-  "You're not lost. You’re taking the scenic route through your own character arc.",
-  "You’ve survived 100% of your worst days — statistically, you’re crushing it.",
-  "Tears = emotional detox. Let it out. It’s your body’s natural reboot system.",
-  "You’re someone’s favorite notification. Probably your dog. But still.",
-  "Existential dread? Classic main character energy. Just add lighting and music.",
-  "You're not a failure. You’re in your plot development montage. Cue the uplifting music.",
-  "Your spiral is oddly artistic. We love a messy-but-stylish breakdown.",
-  "You’re built for rerouting. Detours don’t mean dead ends.",
-  "You're like soup. Sometimes salty, often comforting, always needed.",
-  "Your mind’s dramatic, but your heart knows what’s real. Trust it more.",
-  "Even rocks feel pressure. That’s how diamonds happen — and meltdowns. Both valid.",
-  "You’re glitching in a very charming way. Keep going.",
-  "You're not weird. You're an advanced setting most people don’t understand.",
-  "Progress is just stylish flailing with slightly better outfits each time.",
-  "You’re a mess — but the kind that gets displayed in modern galleries.",
-  "You woke up. That’s rebellion in this economy. 10 points to you.",
-  "The void isn’t mad at you. It’s just echoing your vibes back.",
-  "You're still cute when you’re anxious. That’s unfair but true.",
-  "Mood swings? Think of it as emotional jazz. Improvised but still art.",
-  "You’re muted, but you’re still in the room. We hear you.",
-  "You’ve got endurance, not speed. Marathons over sprints, always.",
-  "Rest like it’s a protest. Because it kind of is.",
-  "Feelings are weird, confusing, and often not facts. You're not broken.",
-  "You’re not paused forever — just buffering in HD.",
-  "This low moment? It’s a limited edition. Rare. Collectible. Not permanent.",
-  "Even at your worst, you radiate ‘trying your best’ energy. And that’s gold.",
-  "Rock bottom has great WiFi and surprisingly good people. Welcome. We’ve got memes.",
-  "You're not late. Time is a colonial construct. Breathe.",
-  "Even dragons need naps. You’ll breathe fire again soon.",
-  "That emotion? Probably expired. Toss it out like sour milk.",
-  "You’re doing enough — even if you only made it to the couch today.",
-  "Don’t trust your 2am brain. It’s dramatic and poorly hydrated.",
-  "You’re not bland. You’re emotional paprika. Small dose, big kick.",
-  "You’re allowed to be a little feral. That’s just human seasoning.",
-  "If vibes were currency, you’d be filthy rich — and slightly unstable. Iconic.",
-  "Each breath is a tiny act of defiance. Inhale rebellion.",
-  "Even planets wobble in retrograde. You’re allowed to have off days too.",
-  "You don’t owe anyone a happy face. Especially not today.",
-  "Sadness is a season. Spring always comes, sometimes slowly, but it does.",
-  "You’re made of 80% magic and 20% caffeine. That’s science.",
-  "Crying in the shower with dramatic lighting is elite-level self-care.",
-  "Being tired of being tired is valid. So is doing nothing.",
-  "You’re already more than enough. Even when you feel like half.",
-  "You’re still the plot twist someone didn’t see coming. Keep going.",
-  "You’re made of comeback material, glitter, and soft rage. Use it wisely.",
-  "That panic? It’s your brain rehearsing a scene that may never happen.",
-  "You're not broken. You’re just spicy and misunderstood.",
-  "Today’s win: putting pants on. Or not. Either way, you’re trying.",
-  "Your low days still count. Growth rings form in every season.",
-  "Embrace your weird. That’s your entire brand and we support it.",
-  "Being soft isn’t weakness. It’s what makes you human. And huggable.",
-  "You’re not ‘too much.’ You’re a whole mood. Let ‘em adjust.",
-  "Even legends have bad days. That’s how origin stories begin.",
-  "Let today be what it is. Survive it with snacks and sarcasm.",
-  "This version of you matters. Even if it’s 80% sweatpants.",
-  "You don’t need a glow-up. You need a snack and less pressure.",
-  "Your vibe is still valid. Even if it’s a little glitchy.",
-  "Be dramatic. Then drink water and regroup.",
-  "Your struggle isn’t your whole story. It’s just one strange chapter.",
-  "You’re loveable — even when your hair’s a mess and your thoughts worse.",
-  "You’re rebooting. Patience. Updates take time.",
-  "You’ve survived this far. There’s power in that — and caffeine.",
-  "Self-doubt is loud. Doesn’t mean it’s right.",
-  "Tears aren’t weakness. They’re just emotional sweat. Let it drip.",
-  "You’re healing. Healing is ugly and weird. Still counts.",
-  "You’re not alone. You're just temporarily unplugged. Reconnect when you're ready.",
-  "Anxiety is just mental jazz — messy but full of feeling.",
-  "You’re still here. That alone is wildly impressive.",
-  "Weird day? You’re still a whole vibe.",
-  "Let the nonsense pass through you like a weird breeze.",
-  "You’re doing a great job… at existing. And that’s enough.",
-  "You’re not broken — just mid-transformation. It’s cocoon vibes.",
-  "Vulnerability is hot. It’s like confidence, but braver.",
-  "You don’t have to earn your rest. You deserve it because you’re alive.",
-  "Your thoughts are just guests. Don’t let the loud ones redecorate.",
-  "You’ve outlived every bad haircut. You’ll outlive this feeling too.",
-  "You don’t have to fix the whole vibe. Just adjust the volume.",
-  "Your mess makes others feel seen. That’s kind of heroic.",
-  "The fog always lifts. Just walk slow and don’t trip on your feelings.",
-  "Feeling flat? You’re still part of the song. Probably a bridge.",
-  "You make sad look poetic. And kind of fierce.",
-  "You don’t have to be okay. Just be honest. That’s enough.",
-  "You deserve soft things, slow days, and zero expectations sometimes.",
-  "Crying is healing in dramatic, liquid form. Hydrate afterward.",
-  "Life’s weird. You’re weirder. You win."
-];
-
-    const dailyThoughts = [
-      "You're doing better than you think. One rough day doesn't define your journey...",
-      "Even storms run out of rain. Peace will return. You've weathered them all.",
-      "You matter—not just in big ways, but in small ripples that reach others.",
-      "It’s okay to not be okay. You’re still trying. Still showing up.",
-      "You’re strong for speaking up—even to a screen. That’s brave.",
-      "Low points are pauses, not ends. You’re still growing.",
-      "Take a breath. You’ve survived every worst day. That’s strength.",
-      "You’re not broken. You’re healing. Even if it’s quiet.",
-      "You deserve to feel heard. Seen. Supported.",
-      "You’re allowed to rest. To restart. To reach out.",
-      "You’re not too much. You’re just enough.",
-      "You don’t need to fix everything today. Just be.",
-      "Your brain is tired. That’s not failure."
+    const positiveResponses = [
+    "You’re not broken. You’re buffering through life’s terrible WiFi. It’ll reconnect.",
+      "Your brain is being loud again. Doesn’t mean it’s right — just persistent.",
+      "Even WiFi drops. So can you — the weight, the pressure, the guilt. Just for a bit.",
+      "You're not behind. You’re on your own weird, wonderful schedule. Time is fake anyway.",
+      "Feelings are just emotional farts. Awkward, surprising, but very human. Let them out.",
+      "You're not a mess. You’re a Picasso. Some people just don’t get modern art.",
+      "Rest isn’t laziness. It’s maintenance. Even superheroes nap sometimes.",
+      "Not every thought deserves a TED Talk. Especially the anxious ones.",
+      "Crying counts as cardio. Bonus points if it’s in the shower with dramatic music.",
+      "You're basically emotional Teflon. The bad stuff slides off eventually — with a few dramatic pauses.",
+      "Some days you're the pigeon. Other days you're the statue. Either way, you're part of the story.",
+      "If life’s a circus, you’re the fire-eater. Bold, chaotic, and kind of mesmerizing.",
+      "You're more stable than your phone battery after 2 years. That’s saying something.",
+      "Your chaos has a rhythm. It’s not off-beat, it’s jazz.",
+      "Breathe. Even fish do it. And they don’t pay taxes.",
+      "You're not lost. You’re taking the scenic route through your own character arc.",
+      "You’ve survived 100% of your worst days — statistically, you’re crushing it.",
+      "Tears = emotional detox. Let it out. It’s your body’s natural reboot system.",
+      "You’re someone’s favorite notification. Probably your dog. But still.",
+      "Existential dread? Classic main character energy. Just add lighting and music.",
+      "You're not a failure. You’re in your plot development montage. Cue the uplifting music.",
+      "Your spiral is oddly artistic. We love a messy-but-stylish breakdown.",
+      "You’re built for rerouting. Detours don’t mean dead ends.",
+      "You're like soup. Sometimes salty, often comforting, always needed.",
+      "Your mind’s dramatic, but your heart knows what’s real. Trust it more.",
+      "Even rocks feel pressure. That’s how diamonds happen — and meltdowns. Both valid.",
+      "You’re glitching in a very charming way. Keep going.",
+      "You're not weird. You're an advanced setting most people don’t understand.",
+      "Progress is just stylish flailing with slightly better outfits each time.",
+      "You’re a mess — but the kind that gets displayed in modern galleries.",
+      "You woke up. That’s rebellion in this economy. 10 points to you.",
+      "The void isn’t mad at you. It’s just echoing your vibes back.",
+      "You're still cute when you’re anxious. That’s unfair but true.",
+      "Mood swings? Think of it as emotional jazz. Improvised but still art.",
+      "You’re muted, but you’re still in the room. We hear you.",
+      "You’ve got endurance, not speed. Marathons over sprints, always.",
+      "Rest like it’s a protest. Because it kind of is.",
+      "Feelings are weird, confusing, and often not facts. You're not broken.",
+      "You’re not paused forever — just buffering in HD.",
+      "This low moment? It’s a limited edition. Rare. Collectible. Not permanent.",
+      "Even at your worst, you radiate ‘trying your best’ energy. And that’s gold.",
+      "Rock bottom has great WiFi and surprisingly good people. Welcome. We’ve got memes.",
+      "You're not late. Time is a colonial construct. Breathe.",
+      "Even dragons need naps. You’ll breathe fire again soon.",
+      "That emotion? Probably expired. Toss it out like sour milk.",
+      "You’re doing enough — even if you only made it to the couch today.",
+      "Don’t trust your 2am brain. It’s dramatic and poorly hydrated.",
+      "You’re not bland. You’re emotional paprika. Small dose, big kick.",
+      "You’re allowed to be a little feral. That’s just human seasoning.",
+      "If vibes were currency, you’d be filthy rich — and slightly unstable. Iconic.",
+      "Each breath is a tiny act of defiance. Inhale rebellion.",
+      "Even planets wobble in retrograde. You’re allowed to have off days too.",
+      "You don’t owe anyone a happy face. Especially not today.",
+      "Sadness is a season. Spring always comes, sometimes slowly, but it does.",
+      "You’re made of 80% magic and 20% caffeine. That’s science.",
+      "Crying in the shower with dramatic lighting is elite-level self-care.",
+      "Being tired of being tired is valid. So is doing nothing.",
+      "You’re already more than enough. Even when you feel like half.",
+      "You’re still the plot twist someone didn’t see coming. Keep going.",
+      "You’re made of comeback material, glitter, and soft rage. Use it wisely.",
+      "That panic? It’s your brain rehearsing a scene that may never happen.",
+      "You're not broken. You’re just spicy and misunderstood.",
+      "Today’s win: putting pants on. Or not. Either way, you’re trying.",
+      "Your low days still count. Growth rings form in every season.",
+      "Embrace your weird. That’s your entire brand and we support it.",
+      "Being soft isn’t weakness. It’s what makes you human. And huggable.",
+      "You’re not ‘too much.’ You’re a whole mood. Let ‘em adjust.",
+      "Even legends have bad days. That’s how origin stories begin.",
+      "Let today be what it is. Survive it with snacks and sarcasm.",
+      "This version of you matters. Even if it’s 80% sweatpants.",
+      "You don’t need a glow-up. You need a snack and less pressure.",
+      "Your vibe is still valid. Even if it’s a little glitchy.",
+      "Be dramatic. Then drink water and regroup.",
+      "Your struggle isn’t your whole story. It’s just one strange chapter.",
+      "You’re loveable — even when your hair’s a mess and your thoughts worse.",
+      "You’re rebooting. Patience. Updates take time.",
+      "You’ve survived this far. There’s power in that — and caffeine.",
+      "Self-doubt is loud. Doesn’t mean it’s right.",
+      "Tears aren’t weakness. They’re just emotional sweat. Let it drip.",
+      "You’re healing. Healing is ugly and weird. Still counts.",
+      "You’re not alone. You're just temporarily unplugged. Reconnect when you're ready.",
+      "Anxiety is just mental jazz — messy but full of feeling.",
+      "You’re still here. That alone is wildly impressive.",
+      "Weird day? You’re still a whole vibe.",
+      "Let the nonsense pass through you like a weird breeze.",
+      "You’re doing a great job… at existing. And that’s enough.",
+      "You’re not broken — just mid-transformation. It’s cocoon vibes.",
+      "Vulnerability is hot. It’s like confidence, but braver.",
+      "You don’t have to earn your rest. You deserve it because you’re alive.",
+      "Your thoughts are just guests. Don’t let the loud ones redecorate.",
+      "You’ve outlived every bad haircut. You’ll outlive this feeling too.",
+      "You don’t have to fix the whole vibe. Just adjust the volume.",
+      "Your mess makes others feel seen. That’s kind of heroic.",
+      "The fog always lifts. Just walk slow and don’t trip on your feelings.",
+      "Feeling flat? You’re still part of the song. Probably a bridge.",
+      "You make sad look poetic. And kind of fierce.",
+      "You don’t have to be okay. Just be honest. That’s enough.",
+      "You deserve soft things, slow days, and zero expectations sometimes.",
+      "Crying is healing in dramatic, liquid form. Hydrate afterward.",
+      "Life’s weird. You’re weirder. You win."
     ];
 
     function typeText(text, elementId) {
@@ -332,11 +303,6 @@ const positiveResponses = [
       }
       const reply = positiveResponses[Math.floor(Math.random() * positiveResponses.length)];
       typeText(reply, "response");
-    }
-
-    function showDailyMessage() {
-      const dayIndex = new Date().getDate() % dailyThoughts.length;
-      typeText("💬 Daily thought: " + dailyThoughts[dayIndex], "daily");
     }
   </script>
 </body>
